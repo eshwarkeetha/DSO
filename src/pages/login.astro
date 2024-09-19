@@ -1,0 +1,46 @@
+---
+const handleSubmit = (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const email = formData.get('email');
+  const password = formData.get('password');
+
+  fetch('/api/auth/local', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ identifier: email, password }),
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.jwt) {
+      alert('Login successful');
+      localStorage.setItem('token', data.jwt);
+      window.location.href = '/dashboard';
+    } else {
+      alert('Login failed');
+    }
+  })
+  .catch(err => console.error(err));
+};
+---
+
+<html lang="en">
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <form onSubmit={handleSubmit}>
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required /><br/>
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required /><br/>
+
+      <button type="submit">Login</button>
+    </form>
+  </body>
+</html>
+ 

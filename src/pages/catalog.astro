@@ -1,0 +1,23 @@
+---
+let products = [];
+try {
+  const response = await fetch('http://localhost:1337/products');
+  if (!response.ok) {
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+  products = await response.json();
+} catch (error) {
+  console.error('Failed to fetch products:', error);
+  products = []; // Handle the error as needed (e.g., show a message to the user)
+}
+---
+
+<div>
+  {products.length > 0 ? (
+    products.map(product => (
+      <ProductCard key={product.id} product={product} />
+    ))
+  ) : (
+    <p>No products available.</p>
+  )}
+</div>

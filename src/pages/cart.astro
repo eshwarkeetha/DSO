@@ -1,0 +1,23 @@
+---
+let cartItems = [];
+try {
+  const response = await fetch('http://localhost:1337/cart');
+  if (!response.ok) {
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+  cartItems = await response.json();
+} catch (error) {
+  console.error('Fetch error:', error);
+  // Handle the error, e.g., show a message to the user
+}
+---
+
+<div>
+  {cartItems.length > 0 ? (
+    cartItems.map(item => (
+      <CartItem key={item.id} item={item} />
+    ))
+  ) : (
+    <p>No items in the cart.</p>
+  )}
+</div>
